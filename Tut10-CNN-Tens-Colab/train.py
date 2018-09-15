@@ -11,11 +11,17 @@ model_dir = './model'
 tf.logging.set_verbosity(tf.logging.INFO)
 
 class LeNet():
-	def __init__(self, weights=None, sess=None, log=True):
+	def __init__(self, activ_func='relu', is_drop_conv=False, optimizer_name='adam', conv1_size=32, conv2_size=64, weights=None, sess=None, log=True):
 		self.X = tf.placeholder(tf.float32, [None, 28, 28, 1], name='X')
 		self.keep_prob = tf.placeholder(tf.float32, name='keep_prob')
 		self.log = log
 		self.sess = sess
+
+		self.activ_func = activ_func
+		self.is_drop_conv = is_drop_conv
+		self.optimizer_name = optimizer_name
+		self.conv1_size = conv1_size
+		self.conv2_size = conv2_size
 
 		self.conv_layers()
 		self.fc_layers()
@@ -31,13 +37,18 @@ class LeNet():
 
 		# Layer 1: Conv
 		with tf.name_scope('conv1') as scope:
-			kernel = tf.Variable(tf.random_normal([3, 3, 1, 32], dtype=tf.float32, stddev=1e-1, 
+			kernel = tf.Variable(tf.random_normal([3, 3, 1, self.conv1_size], dtype=tf.float32, stddev=1e-1, 
 				name='weights'))
 			conv = tf.nn.conv2d(images, kernel, [1, 1, 1, 1], padding='SAME')
-			biases = tf.Variable(tf.constant(0.0, shape=[32], dtype=tf.float32),
+			biases = tf.Variable(tf.constant(0.0, shape=[self.conv1_size], dtype=tf.float32),
 				trainable=True, name='biases')
 			out = tf.nn.bias_add(conv, biases)
-			self.conv1 = tf.nn.relu(out, name=scope)
+			if self.activ_func == 'relu':
+				self.conv1 = tf.nn.relu(out, name=scope)
+			elif self.activ_func == 'sigmoid':
+				self.conv1 = tf.nn.sigmoid(out, name=scope)	
+			if self.is_drop_conv:
+				self.conv1 = tf.nn.dropout(self.conv1, keep_prob=self.keep_prob)
 			self.parameters += [kernel, biases]
 
 		# Layer 1: Pooling
@@ -49,12 +60,18 @@ class LeNet():
 
 		# Layer 2: Conv
 		with tf.name_scope('conv2') as scope:
-			kernel = tf.Variable(tf.random_normal([3, 3, 32, 64], dtype=tf.float32, stddev=1e-1, name='weights'))
+			kernel = tf.Variable(tf.random_normal([3, 3, self.conv1_size, self.conv2_size], dtype=tf.float32, stddev=1e-1, name='weights'))
 			conv = tf.nn.conv2d(self.pool1, kernel, [1, 1, 1, 1], padding='SAME')
-			biases = tf.Variable(tf.constant(0.0, shape=[64], dtype=tf.float32),
+			biases = tf.Variable(tf.constant(0.0, shape=[self.conv2_size], dtype=tf.float32),
 				trainable=True, name='biases')
 			out = tf.nn.bias_add(conv, biases)
-			self.conv2 = tf.nn.relu(out, name=scope)
+			if self.activ_func == 'relu':
+				self.conv2 = tf.nn.relu(out, name=scope)
+			elif self.activ_func == 'sigmoid':
+				self.conv2 = tf.nn.sigmoid(out, name=scope)
+					
+			if self.is_drop_conv:
+				self.conv2 = tf.nn.dropout(self.conv2, keep_prob=self.keep_prob)
 			self.parameters += [kernel, biases]
 
 		# Layer 2: Pooling
@@ -100,8 +117,11 @@ class LeNet():
 		# Define cost function
 		self.cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=self.logits, labels=self.Y))
 		# Define optimization method
-		self.optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(self.cost)
-
+		if self.optimizer_name == 'adam':
+			self.optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(self.cost)
+		elif self.optimizer_name == 'gradient':
+			self.optimizer = tf.train.GradientDescentOptimizer(learning_rate=learning_rate).minimize(self.cost)
+		
 		# Start logger
 		if self.log:
 				tf.summary.scalar('cost', self.cost)
