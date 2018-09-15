@@ -193,10 +193,64 @@ class LeNet():
 		print('Test Accuracy:', test_accuracy)
 
 def main(unused_argv):
+	# 32 kernel	64 kernel	ReLU	no (chỉ ở FC1)	AdamOptimizer
+	# 32 kernel	64 kernel	Sigmod	no (chỉ ở FC1)	AdamOptimizer
+	# 6 kernel	16 kernel	ReLU	no (chỉ ở FC1)	AdamOptimizer
+	# 64 kernel	128 kernel	ReLU	no (chỉ ở FC1)	AdamOptimizer
+	# 32 kernel	64 kernel	ReLU	no (chỉ ở FC1)	GradientDescentOptimizer
+	# 32 kernel	64 kernel	ReLU	yes (Conv+FC)	AdamOptimizer
+
+	run_lenet(activ_func='relu', 
+		is_drop_conv=False, 
+		optimizer_name='adam', 
+		conv1_size=32, 
+		conv2_size=64)
+
+	run_lenet(activ_func='sigmoid', 
+		is_drop_conv=False, 
+		optimizer_name='adam', 
+		conv1_size=32, 
+		conv2_size=64)
+
+	run_lenet(activ_func='relu', 
+		is_drop_conv=False, 
+		optimizer_name='adam', 
+		conv1_size=6, 
+		conv2_size=16)
+
+	run_lenet(activ_func='relu', 
+		is_drop_conv=False, 
+		optimizer_name='adam', 
+		conv1_size=64, 
+		conv2_size=128)
+
+	run_lenet(activ_func='relu', 
+		is_drop_conv=False, 
+		optimizer_name='gradient', 
+		conv1_size=32, 
+		conv2_size=64)
+
+	run_lenet(activ_func='relu', 
+		is_drop_conv=True, 
+		optimizer_name='adam', 
+		conv1_size=32, 
+		conv2_size=64)
+
+
+def run_lenet(activ_func='relu', 
+		is_drop_conv=False, 
+		optimizer_name='adam', 
+		conv1_size=32, 
+		conv2_size=64):
 	tf.reset_default_graph()
 	sess = tf.Session()
-	lenet = LeNet(sess=sess, weights=None)
-
+	lenet = LeNet(
+		activ_func='relu', 
+		is_drop_conv=False, 
+		optimizer_name='adam', 
+		conv1_size=32, 
+		conv2_size=64
+		,sess=sess, weights=None)
 	lenet.train(learning_rate=0.001, training_epochs=40, batch_size=1000, keep_prob=0.7)
 	lenet.evaluate(batch_size=1000, keep_prob=0.7)
 
