@@ -214,13 +214,13 @@ def main(unused_argv):
 	# print('32 kernel	64 kernel	ReLU	no (chỉ ở FC1)	AdamOptimizer')
 	# print('\n\n')
 
-	run_lenet(activ_func='sigmoid', 
-		is_drop_conv=False, 
-		optimizer_name='adam', 
-		conv1_size=32, 
-		conv2_size=64)
-	print('32 kernel	64 kernel	Sigmod	no (chỉ ở FC1)	AdamOptimizer')
-	print('\n\n')
+	# run_lenet(activ_func='sigmoid', 
+	# 	is_drop_conv=False, 
+	# 	optimizer_name='adam', 
+	# 	conv1_size=32, 
+	# 	conv2_size=64)
+	# print('32 kernel	64 kernel	Sigmod	no (chỉ ở FC1)	AdamOptimizer')
+	# print('\n\n')
 
 	# run_lenet(activ_func='relu', 
 	# 	is_drop_conv=False, 
@@ -238,13 +238,13 @@ def main(unused_argv):
 	# print('64 kernel	128 kernel	ReLU	no (chỉ ở FC1)	AdamOptimizer')
 	# print('\n\n')
 
-	# run_lenet(activ_func='relu', 
-	# 	is_drop_conv=False, 
-	# 	optimizer_name='gradient', 
-	# 	conv1_size=32, 
-	# 	conv2_size=64)
-	# print('32 kernel	64 kernel	ReLU	no (chỉ ở FC1)	GradientDescentOptimizer')
-	# print('\n\n')
+	run_lenet(activ_func='relu', 
+		is_drop_conv=False, 
+		optimizer_name='gradient', 
+		conv1_size=32, 
+		conv2_size=64)
+	print('32 kernel	64 kernel	ReLU	no (chỉ ở FC1)	GradientDescentOptimizer')
+	print('\n\n')
 
 	# run_lenet(activ_func='relu', 
 	# 	is_drop_conv=True, 
