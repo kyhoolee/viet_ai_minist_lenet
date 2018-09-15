@@ -206,53 +206,72 @@ def main(unused_argv):
 	# 32 kernel	64 kernel	ReLU	no (chỉ ở FC1)	GradientDescentOptimizer
 	# 32 kernel	64 kernel	ReLU	yes (Conv+FC)	AdamOptimizer
 
-	# run_lenet(activ_func='relu', 
-	# 	is_drop_conv=False, 
-	# 	optimizer_name='adam', 
-	# 	conv1_size=32, 
-	# 	conv2_size=64)
-	# print('32 kernel	64 kernel	ReLU	no (chỉ ở FC1)	AdamOptimizer')
-	# print('\n\n')
+	import time
+	start = time.time()
+	run_lenet(activ_func='relu', 
+		is_drop_conv=False, 
+		optimizer_name='adam', 
+		conv1_size=32, 
+		conv2_size=64)
+	end = time.time()
+	print(end - start)
+	print('32 kernel	64 kernel	ReLU	no (chỉ ở FC1)	AdamOptimizer')
+	print('\n\n')
 
-	# run_lenet(activ_func='sigmoid', 
-	# 	is_drop_conv=False, 
-	# 	optimizer_name='adam', 
-	# 	conv1_size=32, 
-	# 	conv2_size=64)
-	# print('32 kernel	64 kernel	Sigmod	no (chỉ ở FC1)	AdamOptimizer')
-	# print('\n\n')
+	start = time.time()
+	run_lenet(activ_func='sigmoid', 
+		is_drop_conv=False, 
+		optimizer_name='adam', 
+		conv1_size=32, 
+		conv2_size=64)
+	end = time.time()
+	print(end - start)
+	print('32 kernel	64 kernel	Sigmod	no (chỉ ở FC1)	AdamOptimizer')
+	print('\n\n')
 
-	# run_lenet(activ_func='relu', 
-	# 	is_drop_conv=False, 
-	# 	optimizer_name='adam', 
-	# 	conv1_size=6, 
-	# 	conv2_size=16)
-	# print('6 kernel	16 kernel	ReLU	no (chỉ ở FC1)	AdamOptimizer')
-	# print('\n\n')
+	start = time.time()
+	run_lenet(activ_func='relu', 
+		is_drop_conv=False, 
+		optimizer_name='adam', 
+		conv1_size=6, 
+		conv2_size=16)
+	end = time.time()
+	print(end - start)
+	print('6 kernel	16 kernel	ReLU	no (chỉ ở FC1)	AdamOptimizer')
+	print('\n\n')
 
-	# run_lenet(activ_func='relu', 
-	# 	is_drop_conv=False, 
-	# 	optimizer_name='adam', 
-	# 	conv1_size=64, 
-	# 	conv2_size=128)
-	# print('64 kernel	128 kernel	ReLU	no (chỉ ở FC1)	AdamOptimizer')
-	# print('\n\n')
+	start = time.time()
+	run_lenet(activ_func='relu', 
+		is_drop_conv=False, 
+		optimizer_name='adam', 
+		conv1_size=64, 
+		conv2_size=128)
+	end = time.time()
+	print(end - start)
+	print('64 kernel	128 kernel	ReLU	no (chỉ ở FC1)	AdamOptimizer')
+	print('\n\n')
 
+	start = time.time()
 	run_lenet(activ_func='relu', 
 		is_drop_conv=False, 
 		optimizer_name='gradient', 
 		conv1_size=32, 
 		conv2_size=64)
+	end = time.time()
+	print(end - start)
 	print('32 kernel	64 kernel	ReLU	no (chỉ ở FC1)	GradientDescentOptimizer')
 	print('\n\n')
 
-	# run_lenet(activ_func='relu', 
-	# 	is_drop_conv=True, 
-	# 	optimizer_name='adam', 
-	# 	conv1_size=32, 
-	# 	conv2_size=64)
-	# print('32 kernel	64 kernel	ReLU	yes (Conv+FC)	AdamOptimizer')
-	# print('\n\n')
+	start = time.time()
+	run_lenet(activ_func='relu', 
+		is_drop_conv=True, 
+		optimizer_name='adam', 
+		conv1_size=32, 
+		conv2_size=64)
+	end = time.time()
+	print(end - start)
+	print('32 kernel	64 kernel	ReLU	yes (Conv+FC)	AdamOptimizer')
+	print('\n\n')
 
 
 def run_lenet(activ_func='relu', 
