@@ -156,7 +156,7 @@ class LeNet():
 				if self.log:
 						self.train_writer.add_summary(summary, epoch + 1)
 
-				print('Epoch:', '%02d' % (epoch + 1), 'cost =', '{:.9f}'.format(avg_cost))
+				#print('Epoch:', '%02d' % (epoch + 1), 'cost =', '{:.9f}'.format(avg_cost))
 
 		print('Training finished!')
 
@@ -205,36 +205,48 @@ def main(unused_argv):
 		optimizer_name='adam', 
 		conv1_size=32, 
 		conv2_size=64)
+	print('32 kernel	64 kernel	ReLU	no (chỉ ở FC1)	AdamOptimizer')
+	print('\n\n')
 
 	run_lenet(activ_func='sigmoid', 
 		is_drop_conv=False, 
 		optimizer_name='adam', 
 		conv1_size=32, 
 		conv2_size=64)
+	print('32 kernel	64 kernel	Sigmod	no (chỉ ở FC1)	AdamOptimizer')
+	print('\n\n')
 
 	run_lenet(activ_func='relu', 
 		is_drop_conv=False, 
 		optimizer_name='adam', 
 		conv1_size=6, 
 		conv2_size=16)
+	print('6 kernel	16 kernel	ReLU	no (chỉ ở FC1)	AdamOptimizer')
+	print('\n\n')
 
 	run_lenet(activ_func='relu', 
 		is_drop_conv=False, 
 		optimizer_name='adam', 
 		conv1_size=64, 
 		conv2_size=128)
+	print('64 kernel	128 kernel	ReLU	no (chỉ ở FC1)	AdamOptimizer')
+	print('\n\n')
 
 	run_lenet(activ_func='relu', 
 		is_drop_conv=False, 
 		optimizer_name='gradient', 
 		conv1_size=32, 
 		conv2_size=64)
+	print('32 kernel	64 kernel	ReLU	no (chỉ ở FC1)	GradientDescentOptimizer')
+	print('\n\n')
 
 	run_lenet(activ_func='relu', 
 		is_drop_conv=True, 
 		optimizer_name='adam', 
 		conv1_size=32, 
 		conv2_size=64)
+	print('32 kernel	64 kernel	ReLU	yes (Conv+FC)	AdamOptimizer')
+	print('\n\n')
 
 
 def run_lenet(activ_func='relu', 
@@ -245,12 +257,12 @@ def run_lenet(activ_func='relu',
 	tf.reset_default_graph()
 	sess = tf.Session()
 	lenet = LeNet(
-		activ_func='relu', 
-		is_drop_conv=False, 
-		optimizer_name='adam', 
-		conv1_size=32, 
-		conv2_size=64
-		,sess=sess, weights=None)
+		activ_func=activ_func, 
+		is_drop_conv=is_drop_conv, 
+		optimizer_name=optimizer_name, 
+		conv1_size=conv1_size, 
+		conv2_size=conv2_size,
+		sess=sess, weights=None)
 	lenet.train(learning_rate=0.001, training_epochs=40, batch_size=1000, keep_prob=0.7)
 	lenet.evaluate(batch_size=1000, keep_prob=0.7)
 
