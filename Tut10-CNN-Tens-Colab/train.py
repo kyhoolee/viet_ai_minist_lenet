@@ -91,7 +91,10 @@ class LeNet():
 				trainable=True, name='biases')
 			pool2_flat = tf.reshape(self.pool2, [-1, shape])
 			fc1l = tf.nn.bias_add(tf.matmul(pool2_flat, fc1w), fc1b)
-			self.fc1 = tf.nn.relu(fc1l)
+			if self.activ_func == 'relu':
+				self.fc1 = tf.nn.relu(fc1l)
+			elif self.activ_func == 'sigmoid':
+				self.fc1 = tf.nn.sigmoid(fc1l)
 			self.dropout1 = tf.nn.dropout(self.fc1, keep_prob=self.keep_prob, name='dropout1')
 			self.parameters += [fc1w, fc1b]
 
@@ -102,7 +105,10 @@ class LeNet():
 			fc2b = tf.Variable(tf.constant(1.0, shape=[10], dtype=tf.float32),
 				trainable=True, name='biases')
 			fc2l = tf.nn.bias_add(tf.matmul(self.dropout1, fc2w), fc2b)
-			self.logits = tf.nn.relu(fc2l)
+			if self.activ_func:
+				self.logits = tf.nn.relu(fc2l)
+			elif self.activ_func == 'sigmoid':
+				self.logits = tf.nn.sigmoid(fc2l)
 			self.parameters += [fc2w, fc2b]
 
 	def load_weights(weights, sess):
@@ -200,13 +206,13 @@ def main(unused_argv):
 	# 32 kernel	64 kernel	ReLU	no (chỉ ở FC1)	GradientDescentOptimizer
 	# 32 kernel	64 kernel	ReLU	yes (Conv+FC)	AdamOptimizer
 
-	run_lenet(activ_func='relu', 
-		is_drop_conv=False, 
-		optimizer_name='adam', 
-		conv1_size=32, 
-		conv2_size=64)
-	print('32 kernel	64 kernel	ReLU	no (chỉ ở FC1)	AdamOptimizer')
-	print('\n\n')
+	# run_lenet(activ_func='relu', 
+	# 	is_drop_conv=False, 
+	# 	optimizer_name='adam', 
+	# 	conv1_size=32, 
+	# 	conv2_size=64)
+	# print('32 kernel	64 kernel	ReLU	no (chỉ ở FC1)	AdamOptimizer')
+	# print('\n\n')
 
 	run_lenet(activ_func='sigmoid', 
 		is_drop_conv=False, 
@@ -216,37 +222,37 @@ def main(unused_argv):
 	print('32 kernel	64 kernel	Sigmod	no (chỉ ở FC1)	AdamOptimizer')
 	print('\n\n')
 
-	run_lenet(activ_func='relu', 
-		is_drop_conv=False, 
-		optimizer_name='adam', 
-		conv1_size=6, 
-		conv2_size=16)
-	print('6 kernel	16 kernel	ReLU	no (chỉ ở FC1)	AdamOptimizer')
-	print('\n\n')
+	# run_lenet(activ_func='relu', 
+	# 	is_drop_conv=False, 
+	# 	optimizer_name='adam', 
+	# 	conv1_size=6, 
+	# 	conv2_size=16)
+	# print('6 kernel	16 kernel	ReLU	no (chỉ ở FC1)	AdamOptimizer')
+	# print('\n\n')
 
-	run_lenet(activ_func='relu', 
-		is_drop_conv=False, 
-		optimizer_name='adam', 
-		conv1_size=64, 
-		conv2_size=128)
-	print('64 kernel	128 kernel	ReLU	no (chỉ ở FC1)	AdamOptimizer')
-	print('\n\n')
+	# run_lenet(activ_func='relu', 
+	# 	is_drop_conv=False, 
+	# 	optimizer_name='adam', 
+	# 	conv1_size=64, 
+	# 	conv2_size=128)
+	# print('64 kernel	128 kernel	ReLU	no (chỉ ở FC1)	AdamOptimizer')
+	# print('\n\n')
 
-	run_lenet(activ_func='relu', 
-		is_drop_conv=False, 
-		optimizer_name='gradient', 
-		conv1_size=32, 
-		conv2_size=64)
-	print('32 kernel	64 kernel	ReLU	no (chỉ ở FC1)	GradientDescentOptimizer')
-	print('\n\n')
+	# run_lenet(activ_func='relu', 
+	# 	is_drop_conv=False, 
+	# 	optimizer_name='gradient', 
+	# 	conv1_size=32, 
+	# 	conv2_size=64)
+	# print('32 kernel	64 kernel	ReLU	no (chỉ ở FC1)	GradientDescentOptimizer')
+	# print('\n\n')
 
-	run_lenet(activ_func='relu', 
-		is_drop_conv=True, 
-		optimizer_name='adam', 
-		conv1_size=32, 
-		conv2_size=64)
-	print('32 kernel	64 kernel	ReLU	yes (Conv+FC)	AdamOptimizer')
-	print('\n\n')
+	# run_lenet(activ_func='relu', 
+	# 	is_drop_conv=True, 
+	# 	optimizer_name='adam', 
+	# 	conv1_size=32, 
+	# 	conv2_size=64)
+	# print('32 kernel	64 kernel	ReLU	yes (Conv+FC)	AdamOptimizer')
+	# print('\n\n')
 
 
 def run_lenet(activ_func='relu', 
